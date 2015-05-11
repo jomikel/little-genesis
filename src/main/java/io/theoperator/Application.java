@@ -28,7 +28,8 @@ public class Application {
             BufferedReader reader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream("settings.json")));
             Configuration c = gson.fromJson(reader, Configuration.class);
 
-            System.out.println("LED on");
+            Thread.sleep(1000);
+            System.out.println("LED off");
             GpioController gpio = GpioFactory.getInstance();
             final GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "LED", PinState.LOW);
 
@@ -36,6 +37,7 @@ public class Application {
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
+                    System.out.println("LED on");
                     myLed.high();
                 }
             };
