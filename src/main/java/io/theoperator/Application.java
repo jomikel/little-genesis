@@ -5,6 +5,9 @@ import com.pi4j.io.gpio.*;
 import io.theoperator.configuration.Configuration;
 
 import java.io.*;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by andreas on 5/8/15.
@@ -27,7 +30,16 @@ public class Application {
 
             System.out.println("LED on");
             GpioController gpio = GpioFactory.getInstance();
-            GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_07, "LED", PinState.HIGH);
+            final GpioPinDigitalOutput myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "LED", PinState.LOW);
+
+            Timer timer = new Timer(Boolean.TRUE);
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    myLed.high();
+                }
+            };
+            timer.schedule(task, new Date(new Date().getTime()+100000));
 
             // make a date object of each water setpoint
         } catch (Exception ex) {
